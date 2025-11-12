@@ -1,89 +1,92 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
-import gsap from 'gsap'
-import { characters } from '../data/characters'
-import type { Character } from '../types'
-
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
+import { characters } from "../data/characters";
+import type { Character } from "../types";
+import LOGO from "../../public/image.png";
 const Book3DFlip = () => {
-  const [currentPage, setCurrentPage] = useState(0)
-  const [isFlipping, setIsFlipping] = useState(false)
-  const bookRef = useRef<HTMLDivElement>(null)
-  const curlingPageRef = useRef<HTMLDivElement>(null)
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isFlipping, setIsFlipping] = useState(false);
+  const bookRef = useRef<HTMLDivElement>(null);
+  const curlingPageRef = useRef<HTMLDivElement>(null);
 
-  const totalPages = characters.length + 2
+  const totalPages = characters.length + 2;
 
   const getCurrentCharacter = (): Character | undefined => {
     if (currentPage === 0 || currentPage === totalPages - 1) {
-      return undefined
+      return undefined;
     }
-    return characters[currentPage - 1]
-  }
+    return characters[currentPage - 1];
+  };
 
-  const character = getCurrentCharacter()
+  const character = getCurrentCharacter();
 
   // Page flip with realistic curl
   const flipForward = () => {
-    if (isFlipping || currentPage >= totalPages - 1) return
+    if (isFlipping || currentPage >= totalPages - 1) return;
 
-    setIsFlipping(true)
-    const curlingPage = curlingPageRef.current
+    setIsFlipping(true);
+    const curlingPage = curlingPageRef.current;
 
     if (!curlingPage) {
       setTimeout(() => {
-        setCurrentPage(prev => prev + 1)
-        setIsFlipping(false)
-      }, 100)
-      return
+        setCurrentPage((prev) => prev + 1);
+        setIsFlipping(false);
+      }, 100);
+      return;
     }
 
     // Show the curling page
-    gsap.set(curlingPage, { display: 'block', opacity: 1 })
+    gsap.set(curlingPage, { display: "block", opacity: 1 });
 
     // Complex page curl animation
     const tl = gsap.timeline({
       onComplete: () => {
-        setCurrentPage(prev => prev + 1)
-        gsap.set(curlingPage, { display: 'none', opacity: 0 })
-        setIsFlipping(false)
-      }
-    })
+        setCurrentPage((prev) => prev + 1);
+        gsap.set(curlingPage, { display: "none", opacity: 0 });
+        setIsFlipping(false);
+      },
+    });
 
     // Animate the curl effect
     tl.to(curlingPage, {
-      '--curl-amount': '100%',
-      '--curl-angle': '180deg',
-      '--shadow-opacity': 0.8,
+      "--curl-amount": "100%",
+      "--curl-angle": "180deg",
+      "--shadow-opacity": 0.8,
       duration: 1.2,
-      ease: 'power2.inOut'
-    })
-    .to(curlingPage, {
-      '--shadow-opacity': 0.3,
-      duration: 0.3,
-      ease: 'power2.out'
-    }, '-=0.3')
-  }
+      ease: "power2.inOut",
+    }).to(
+      curlingPage,
+      {
+        "--shadow-opacity": 0.3,
+        duration: 0.3,
+        ease: "power2.out",
+      },
+      "-=0.3"
+    );
+  };
 
   const flipBackward = () => {
-    if (isFlipping || currentPage <= 0) return
+    if (isFlipping || currentPage <= 0) return;
 
-    setIsFlipping(true)
+    setIsFlipping(true);
 
     setTimeout(() => {
-      setCurrentPage(prev => prev - 1)
-      setIsFlipping(false)
-    }, 800)
-  }
+      setCurrentPage((prev) => prev - 1);
+      setIsFlipping(false);
+    }, 800);
+  };
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') flipForward()
-      if (e.key === 'ArrowLeft') flipBackward()
-    }
+      if (e.key === "ArrowRight") flipForward();
+      if (e.key === "ArrowLeft") flipBackward();
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentPage, isFlipping])
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentPage, isFlipping]);
 
   const renderCover = () => (
     <div className="book-spread">
@@ -100,7 +103,9 @@ const Book3DFlip = () => {
           <div className="page-content">
             <div className="cover-star">⭐</div>
             <h1 className="cover-title gradient-text">
-              Dấu ấn<br />Người Cộng sản
+              Dấu ấn
+              <br />
+              Người Cộng sản
             </h1>
             <div className="cover-subtitle">
               <p>Hành trình của những con người</p>
@@ -114,7 +119,7 @@ const Book3DFlip = () => {
         <div className="page-edge right-edge"></div>
       </div>
     </div>
-  )
+  );
 
   const renderBackCover = () => (
     <div className="book-spread">
@@ -122,11 +127,14 @@ const Book3DFlip = () => {
         <div className="page-surface">
           <div className="page-content">
             <div className="back-quote">
-              "Không có gì quý hơn<br />độc lập, tự do"
+              "Không có gì quý hơn
+              <br />
+              độc lập, tự do"
             </div>
             <div className="back-divider"></div>
             <p className="back-text">
-              {characters.length} chân dung lãnh tụ<br />
+              {characters.length} chân dung lãnh tụ
+              <br />
               và nhà cách mạng kiên trung
             </p>
             <div className="click-hint">← Click để quay lại</div>
@@ -138,31 +146,22 @@ const Book3DFlip = () => {
         <div className="page-surface">
           <div className="page-content">
             <div className="back-logo">
-              <svg width="80" height="80" viewBox="0 0 32 32" fill="none">
-                <path
-                  d="M16 2L6 10v12l10 8 10-8V10L16 2z"
-                  fill="url(#back-gradient)"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M16 12l-4 3v5l4 3 4-3v-5l-4-3z"
-                  fill="var(--color-gold-primary)"
-                />
-                <defs>
-                  <linearGradient id="back-gradient" x1="6" y1="2" x2="26" y2="30">
-                    <stop offset="0%" stopColor="var(--color-red-primary)" />
-                    <stop offset="100%" stopColor="var(--color-red-dark)" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              <img
+                src={LOGO}
+                alt=""
+                style={{
+                  width: "500px",
+                  height: "500px",
+                  borderRadius: "10%",
+                }}
+              />
             </div>
           </div>
         </div>
         <div className="page-edge right-edge"></div>
       </div>
     </div>
-  )
+  );
 
   const renderCharacterPage = (char: Character) => (
     <div className="book-spread">
@@ -174,7 +173,9 @@ const Book3DFlip = () => {
               <div className="image-overlay"></div>
               <div className="image-label">
                 <h3 className="gradient-text">{char.name}</h3>
-                <p>{char.personal_info.birth} - {char.personal_info.death}</p>
+                <p>
+                  {char.personal_info.birth} - {char.personal_info.death}
+                </p>
               </div>
             </div>
             <div className="click-hint">← Click để quay lại</div>
@@ -207,11 +208,15 @@ const Book3DFlip = () => {
                   <div className="info-grid">
                     <div className="info-item">
                       <span className="label">Quê quán:</span>
-                      <span className="value">{char.personal_info.hometown}</span>
+                      <span className="value">
+                        {char.personal_info.hometown}
+                      </span>
                     </div>
                     <div className="info-item">
                       <span className="label">Hoạt động:</span>
-                      <span className="value">{char.personal_info.active_period}</span>
+                      <span className="value">
+                        {char.personal_info.active_period}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -263,10 +268,10 @@ const Book3DFlip = () => {
         <div className="page-edge right-edge"></div>
       </div>
     </div>
-  )
+  );
 
-  const leftPagesCount = currentPage
-  const rightPagesCount = totalPages - currentPage - 1
+  const leftPagesCount = currentPage;
+  const rightPagesCount = totalPages - currentPage - 1;
 
   return (
     <div className="book-scene">
@@ -285,7 +290,7 @@ const Book3DFlip = () => {
               className="pages-left"
               style={{
                 width: `${leftPagesCount * 3}px`,
-                display: leftPagesCount > 0 ? 'block' : 'none'
+                display: leftPagesCount > 0 ? "block" : "none",
               }}
             >
               {[...Array(Math.min(leftPagesCount, 15))].map((_, i) => (
@@ -295,7 +300,7 @@ const Book3DFlip = () => {
                   style={{
                     left: `${-i * 0.2}px`,
                     transform: `translateZ(${-i * 1.5}px)`,
-                    opacity: 1 - (i * 0.03)
+                    opacity: 1 - i * 0.03,
                   }}
                 />
               ))}
@@ -313,7 +318,7 @@ const Book3DFlip = () => {
               className="pages-right"
               style={{
                 width: `${rightPagesCount * 3}px`,
-                display: rightPagesCount > 0 ? 'block' : 'none'
+                display: rightPagesCount > 0 ? "block" : "none",
               }}
             >
               {[...Array(Math.min(rightPagesCount, 15))].map((_, i) => (
@@ -323,7 +328,7 @@ const Book3DFlip = () => {
                   style={{
                     right: `${-i * 0.2}px`,
                     transform: `translateZ(${-i * 1.5}px)`,
-                    opacity: 1 - (i * 0.03)
+                    opacity: 1 - i * 0.03,
                   }}
                 />
               ))}
@@ -341,11 +346,10 @@ const Book3DFlip = () => {
               ref={curlingPageRef}
               className="curling-page"
               style={{
-                display: 'none',
-                // @ts-ignore - CSS variables
-                '--curl-amount': '0%',
-                '--curl-angle': '0deg',
-                '--shadow-opacity': 0
+                display: "none",
+                "--curl-amount": "0%",
+                "--curl-angle": "0deg",
+                "--shadow-opacity": 0,
               }}
             >
               <div className="curl-container">
@@ -364,12 +368,18 @@ const Book3DFlip = () => {
       {/* Controls */}
       <div className="book-controls">
         <button
-          className={`control-btn ${currentPage === 0 ? 'disabled' : ''}`}
+          className={`control-btn ${currentPage === 0 ? "disabled" : ""}`}
           onClick={flipBackward}
           disabled={isFlipping || currentPage === 0}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path
+              d="M15 18l-6-6 6-6"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <span>Quay lại</span>
         </button>
@@ -379,13 +389,21 @@ const Book3DFlip = () => {
         </div>
 
         <button
-          className={`control-btn ${currentPage === totalPages - 1 ? 'disabled' : ''}`}
+          className={`control-btn ${
+            currentPage === totalPages - 1 ? "disabled" : ""
+          }`}
           onClick={flipForward}
           disabled={isFlipping || currentPage === totalPages - 1}
         >
           <span>Tiếp theo</span>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path
+              d="M9 18l6-6-6-6"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
       </div>
@@ -394,7 +412,7 @@ const Book3DFlip = () => {
         <kbd>←</kbd> <kbd>→</kbd> để lật trang
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Book3DFlip
+export default Book3DFlip;

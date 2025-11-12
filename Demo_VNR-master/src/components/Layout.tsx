@@ -1,25 +1,27 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-
+import { Link, NavLink, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import LOGO from "../../public/image.png";
 const Layout = () => {
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       // Scroll progress
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
-      const scrolled = (window.scrollY / windowHeight) * 100
-      setScrollProgress(scrolled)
+      const windowHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (window.scrollY / windowHeight) * 100;
+      setScrollProgress(scrolled);
 
       // Header background change
-      setIsScrolled(window.scrollY > 50)
-    }
+      setIsScrolled(window.scrollY > 50);
+    };
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="app-shell">
@@ -32,28 +34,23 @@ const Layout = () => {
       </div>
 
       {/* Header */}
-      <header className={`site-header ${isScrolled ? 'scrolled' : ''}`}>
+      <header className={`site-header ${isScrolled ? "scrolled" : ""}`}>
         <div className="container header-inner">
-          <Link to="/" className="brand" aria-label="Trang chủ Dấu ấn Người Cộng sản">
+          <Link
+            to="/"
+            className="brand"
+            aria-label="Trang chủ Dấu ấn Người Cộng sản"
+          >
             <div className="brand-icon">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <path
-                  d="M16 2L6 10v12l10 8 10-8V10L16 2z"
-                  fill="url(#logo-gradient)"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M16 12l-4 3v5l4 3 4-3v-5l-4-3z"
-                  fill="var(--color-gold-primary)"
-                />
-                <defs>
-                  <linearGradient id="logo-gradient" x1="6" y1="2" x2="26" y2="30">
-                    <stop offset="0%" stopColor="var(--color-red-primary)" />
-                    <stop offset="100%" stopColor="var(--color-red-dark)" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              <img
+                src={LOGO}
+                alt=""
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "10%",
+                }}
+              />
             </div>
             <div className="brand-text">
               <span className="brand-mark">Dấu ấn</span>
@@ -66,7 +63,9 @@ const Layout = () => {
             <NavLink
               to="/"
               end
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path
@@ -81,7 +80,9 @@ const Layout = () => {
             </NavLink>
             <NavLink
               to="/nhan-vat"
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path
@@ -102,7 +103,7 @@ const Layout = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            <span className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}>
+            <span className={`hamburger ${mobileMenuOpen ? "open" : ""}`}>
               <span></span>
               <span></span>
               <span></span>
@@ -111,11 +112,13 @@ const Layout = () => {
         </div>
 
         {/* Mobile Navigation */}
-        <nav className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
+        <nav className={`mobile-nav ${mobileMenuOpen ? "open" : ""}`}>
           <NavLink
             to="/"
             end
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
             onClick={() => setMobileMenuOpen(false)}
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -131,7 +134,9 @@ const Layout = () => {
           </NavLink>
           <NavLink
             to="/nhan-vat"
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
             onClick={() => setMobileMenuOpen(false)}
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -170,22 +175,33 @@ const Layout = () => {
               </div>
               <div className="footer-column">
                 <h4>Tài nguyên</h4>
-                <a href="https://vi.wikipedia.org" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://vi.wikipedia.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Wikipedia
                 </a>
-                <a href="https://dangcongsan.vn" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://dangcongsan.vn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Đảng Cộng sản Việt Nam
                 </a>
               </div>
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© {new Date().getFullYear()} Dấu ấn Người Cộng sản. All rights reserved.</p>
+            <p>
+              © {new Date().getFullYear()} Dấu ấn Người Cộng sản. All rights
+              reserved.
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
