@@ -4,11 +4,14 @@ import gsap from "gsap";
 import { characters } from "../data/characters";
 import type { Character } from "../types";
 import LOGO from "../../public/image.png";
+
 const Book3DFlip = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
+  const [flipDirection, setFlipDirection] = useState<'forward' | 'backward'>('forward');
   const bookRef = useRef<HTMLDivElement>(null);
-  const curlingPageRef = useRef<HTMLDivElement>(null);
+  const forwardCurlRef = useRef<HTMLDivElement>(null);
+  const backwardCurlRef = useRef<HTMLDivElement>(null);
 
   const totalPages = characters.length + 2;
 
@@ -21,14 +24,15 @@ const Book3DFlip = () => {
 
   const character = getCurrentCharacter();
 
-  // Page flip with realistic curl
+  // Forward page flip (right page curls left)
   const flipForward = () => {
     if (isFlipping || currentPage >= totalPages - 1) return;
 
     setIsFlipping(true);
-    const curlingPage = curlingPageRef.current;
+    setFlipDirection('forward');
+    const curlPage = forwardCurlRef.current;
 
-    if (!curlingPage) {
+    if (!curlPage) {
       setTimeout(() => {
         setCurrentPage((prev) => prev + 1);
         setIsFlipping(false);
@@ -36,45 +40,88 @@ const Book3DFlip = () => {
       return;
     }
 
-    // Show the curling page
-    gsap.set(curlingPage, { display: "block", opacity: 1 });
+    // Add current page class for animation
+    curlPage.classList.add('animating-forward');
+    gsap.set(curlPage, { display: "block", opacity: 1 });
 
-    // Complex page curl animation
+    // Realistic curl animation with multiple phases
     const tl = gsap.timeline({
       onComplete: () => {
         setCurrentPage((prev) => prev + 1);
-        gsap.set(curlingPage, { display: "none", opacity: 0 });
+        gsap.set(curlPage, { display: "none", opacity: 0 });
+        curlPage.classList.remove('animating-forward');
         setIsFlipping(false);
       },
     });
 
-    // Animate the curl effect
-    tl.to(curlingPage, {
-      "--curl-amount": "100%",
-      "--curl-angle": "180deg",
-      "--shadow-opacity": 0.8,
-      duration: 1.2,
-      ease: "power2.inOut",
-    }).to(
-      curlingPage,
-      {
-        "--shadow-opacity": 0.3,
-        duration: 0.3,
-        ease: "power2.out",
-      },
-      "-=0.3"
-    );
+    // Phase 1: Initial lift (0-20%)
+    tl.to(curlPage, {
+      "--curl-progress": "0.2",
+      duration: 0.25,
+      ease: "power1.in"
+    })
+    // Phase 2: Main curl (20-80%)
+    .to(curlPage, {
+      "--curl-progress": "0.8",
+      duration: 0.7,
+      ease: "power2.inOut"
+    })
+    // Phase 3: Complete flip (80-100%)
+    .to(curlPage, {
+      "--curl-progress": "1",
+      duration: 0.25,
+      ease: "power1.out"
+    });
   };
 
+  // Backward page flip (left page curls right)
   const flipBackward = () => {
     if (isFlipping || currentPage <= 0) return;
 
     setIsFlipping(true);
+    setFlipDirection('backward');
+    const curlPage = backwardCurlRef.current;
 
-    setTimeout(() => {
-      setCurrentPage((prev) => prev - 1);
-      setIsFlipping(false);
-    }, 800);
+    if (!curlPage) {
+      setTimeout(() => {
+        setCurrentPage((prev) => prev - 1);
+        setIsFlipping(false);
+      }, 100);
+      return;
+    }
+
+    // Add current page class for animation
+    curlPage.classList.add('animating-backward');
+    gsap.set(curlPage, { display: "block", opacity: 1 });
+
+    // Realistic curl animation with multiple phases
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setCurrentPage((prev) => prev - 1);
+        gsap.set(curlPage, { display: "none", opacity: 0 });
+        curlPage.classList.remove('animating-backward');
+        setIsFlipping(false);
+      },
+    });
+
+    // Phase 1: Initial lift (0-20%)
+    tl.to(curlPage, {
+      "--curl-progress": "0.2",
+      duration: 0.25,
+      ease: "power1.in"
+    })
+    // Phase 2: Main curl (20-80%)
+    .to(curlPage, {
+      "--curl-progress": "0.8",
+      duration: 0.7,
+      ease: "power2.inOut"
+    })
+    // Phase 3: Complete flip (80-100%)
+    .to(curlPage, {
+      "--curl-progress": "1",
+      duration: 0.25,
+      ease: "power1.out"
+    });
   };
 
   // Keyboard navigation
@@ -289,18 +336,18 @@ const Book3DFlip = () => {
             <div
               className="pages-left"
               style={{
-                width: `${leftPagesCount * 3}px`,
+                width: `${leftPagesCount * 5}px`,
                 display: leftPagesCount > 0 ? "block" : "none",
               }}
             >
-              {[...Array(Math.min(leftPagesCount, 15))].map((_, i) => (
+              {[...Array(Math.min(leftPagesCount, 20))].map((_, i) => (
                 <div
                   key={i}
                   className="page-layer"
                   style={{
-                    left: `${-i * 0.2}px`,
-                    transform: `translateZ(${-i * 1.5}px)`,
-                    opacity: 1 - i * 0.03,
+                    left: `${-i * 0.25}px`,
+                    transform: `translateZ(${-i * 2}px)`,
+                    opacity: 1 - i * 0.02,
                   }}
                 />
               ))}
@@ -317,18 +364,18 @@ const Book3DFlip = () => {
             <div
               className="pages-right"
               style={{
-                width: `${rightPagesCount * 3}px`,
+                width: `${rightPagesCount * 5}px`,
                 display: rightPagesCount > 0 ? "block" : "none",
               }}
             >
-              {[...Array(Math.min(rightPagesCount, 15))].map((_, i) => (
+              {[...Array(Math.min(rightPagesCount, 20))].map((_, i) => (
                 <div
                   key={i}
                   className="page-layer"
                   style={{
-                    right: `${-i * 0.2}px`,
-                    transform: `translateZ(${-i * 1.5}px)`,
-                    opacity: 1 - i * 0.03,
+                    right: `${-i * 0.25}px`,
+                    transform: `translateZ(${-i * 2}px)`,
+                    opacity: 1 - i * 0.02,
                   }}
                 />
               ))}
@@ -341,24 +388,41 @@ const Book3DFlip = () => {
             {currentPage === totalPages - 1 && renderBackCover()}
             {character && renderCharacterPage(character)}
 
-            {/* Curling page overlay */}
+            {/* Forward curling page (right page curls left) */}
             <div
-              ref={curlingPageRef}
-              className="curling-page"
+              ref={forwardCurlRef}
+              className="curling-page forward-curl"
               style={{
                 display: "none",
-                "--curl-amount": "0%",
-                "--curl-angle": "0deg",
-                "--shadow-opacity": 0,
+                // @ts-ignore
+                "--curl-progress": "0",
               }}
             >
               <div className="curl-container">
                 <div className="curl-shadow"></div>
-                <div className="curl-page">
+                <div className="curl-page-wrapper">
                   <div className="curl-front"></div>
                   <div className="curl-back"></div>
                 </div>
-                <div className="curl-gradient"></div>
+              </div>
+            </div>
+
+            {/* Backward curling page (left page curls right) */}
+            <div
+              ref={backwardCurlRef}
+              className="curling-page backward-curl"
+              style={{
+                display: "none",
+                // @ts-ignore
+                "--curl-progress": "0",
+              }}
+            >
+              <div className="curl-container">
+                <div className="curl-shadow"></div>
+                <div className="curl-page-wrapper">
+                  <div className="curl-front"></div>
+                  <div className="curl-back"></div>
+                </div>
               </div>
             </div>
           </div>
