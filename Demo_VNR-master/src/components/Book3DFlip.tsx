@@ -1,106 +1,202 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { characters } from '../data/characters'
 import type { Character } from '../types'
 
 const Book3DFlip = () => {
-  const [currentSpread, setCurrentSpread] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0) // 0 = cover
   const [isFlipping, setIsFlipping] = useState(false)
+  const [flipDirection, setFlipDirection] = useState<'forward' | 'backward'>('forward')
   const bookRef = useRef<HTMLDivElement>(null)
+  const flippingPageRef = useRef<HTMLDivElement>(null)
 
-  // Total spreads: cover + character spreads (2 characters per spread) + back cover
-  const totalSpreads = Math.ceil(characters.length / 2) + 2
+  // Total pages: cover + characters + back cover
+  const totalPages = characters.length + 2 // cover + 10 characters + back
 
-  const getCurrentCharacters = (): [Character?, Character?] => {
-    if (currentSpread === 0 || currentSpread === totalSpreads - 1) {
-      return [undefined, undefined]
+  const getCurrentCharacter = (): Character | undefined => {
+    if (currentPage === 0 || currentPage === totalPages - 1) {
+      return undefined
     }
-    const startIdx = (currentSpread - 1) * 2
-    return [characters[startIdx], characters[startIdx + 1]]
+    return characters[currentPage - 1]
   }
 
-  const [leftChar, rightChar] = getCurrentCharacters()
+  const character = getCurrentCharacter()
 
-  const flipPageForward = () => {
-    if (isFlipping || currentSpread >= totalSpreads - 1) return
+  // Page flip with curl effect
+  const flipForward = () => {
+    if (isFlipping || currentPage >= totalPages - 1) return
 
     setIsFlipping(true)
+    setFlipDirection('forward')
 
-    // Immediately update state to show next spread
-    setTimeout(() => {
-      setCurrentSpread(prev => prev + 1)
-      setIsFlipping(false)
-    }, 800)
+    const flippingPage = flippingPageRef.current
+    if (!flippingPage) {
+      setTimeout(() => {
+        setCurrentPage(prev => prev + 1)
+        setIsFlipping(false)
+      }, 100)
+      return
+    }
+
+    // Get current and next page content
+    const currentChar = getCurrentCharacter()
+    const nextChar = currentPage === 0 ? characters[0] :
+                     currentPage === totalPages - 2 ? undefined :
+                     characters[currentPage]
+
+    // Set flipping page content
+    const leftContent = flippingPage.querySelector('.flipping-left') as HTMLElement
+    const rightContent = flippingPage.querySelector('.flipping-right') as HTMLElement
+
+    if (leftContent && rightContent) {
+      // Left side shows current left content (will become back of flipping page)
+      if (currentPage === 0) {
+        leftContent.innerHTML = renderCoverLeftHTML()
+      } else if (currentChar) {
+        leftContent.innerHTML = renderCharacterLeftHTML(currentChar)
+      }
+
+      // Right side shows current right content (front of flipping page)
+      if (currentPage === 0) {
+        rightContent.innerHTML = renderCoverRightHTML()
+      } else if (currentChar) {
+        rightContent.innerHTML = renderCharacterRightHTML(currentChar)
+      }
+    }
+
+    // GSAP animation for page curl
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setCurrentPage(prev => prev + 1)
+        setIsFlipping(false)
+      }
+    })
+
+    tl.set(flippingPage, {
+      display: 'block',
+      rotateY: 0
+    })
+    .to(flippingPage, {
+      rotateY: -180,
+      duration: 1.5,
+      ease: 'power2.inOut'
+    })
+    .to(flippingPage, {
+      display: 'none'
+    })
   }
 
-  const flipPageBackward = () => {
-    if (isFlipping || currentSpread <= 0) return
+  const flipBackward = () => {
+    if (isFlipping || currentPage <= 0) return
 
     setIsFlipping(true)
+    setFlipDirection('backward')
 
     setTimeout(() => {
-      setCurrentSpread(prev => prev - 1)
+      setCurrentPage(prev => prev - 1)
       setIsFlipping(false)
-    }, 800)
+    }, 1000)
   }
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') flipPageForward()
-      if (e.key === 'ArrowLeft') flipPageBackward()
+      if (e.key === 'ArrowRight') flipForward()
+      if (e.key === 'ArrowLeft') flipBackward()
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [currentSpread, isFlipping])
+  }, [currentPage, isFlipping])
 
-  // 3D tilt on mouse move
-  useEffect(() => {
-    const book = bookRef.current
-    if (!book) return
+  // Helper functions to render HTML content
+  const renderCoverLeftHTML = () => `
+    <div class="page-content-3d">
+      <div class="cover-decoration"></div>
+    </div>
+  `
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isFlipping) return
+  const renderCoverRightHTML = () => `
+    <div class="page-content-3d">
+      <div class="cover-star-3d">⭐</div>
+      <h1 class="cover-title-3d gradient-text">
+        Dấu ấn<br />Người Cộng sản
+      </h1>
+      <div class="cover-subtitle-3d">
+        <p>Hành trình của những con người</p>
+        <p>làm nên lịch sử dân tộc</p>
+      </div>
+      <div class="cover-divider-3d"></div>
+      <p class="cover-year-3d">${new Date().getFullYear()}</p>
+    </div>
+  `
 
-      const rect = book.getBoundingClientRect()
-      const x = (e.clientX - rect.left - rect.width / 2) / rect.width
-      const y = (e.clientY - rect.top - rect.height / 2) / rect.height
+  const renderCharacterLeftHTML = (char: Character) => `
+    <div class="page-content-3d character-image-page">
+      <div class="image-container-3d">
+        <img src="${char.image}" alt="${char.name}" />
+        <div class="image-overlay-3d"></div>
+        <div class="image-label-3d">
+          <h3 class="gradient-text">${char.name}</h3>
+          <p>${char.personal_info.birth} - ${char.personal_info.death}</p>
+        </div>
+      </div>
+    </div>
+  `
 
-      gsap.to(book, {
-        rotationY: x * 5,
-        rotationX: -y * 5,
-        duration: 0.5,
-        ease: 'power2.out'
-      })
-    }
-
-    const handleMouseLeave = () => {
-      gsap.to(book, {
-        rotationY: 0,
-        rotationX: 0,
-        duration: 0.5
-      })
-    }
-
-    book.addEventListener('mousemove', handleMouseMove)
-    book.addEventListener('mouseleave', handleMouseLeave)
-
-    return () => {
-      book.removeEventListener('mousemove', handleMouseMove)
-      book.removeEventListener('mouseleave', handleMouseLeave)
-    }
-  }, [isFlipping])
+  const renderCharacterRightHTML = (char: Character) => `
+    <div class="page-content-3d character-info-page">
+      <div class="character-info-card">
+        <div class="info-header">
+          <div class="info-badge">Thông tin chi tiết</div>
+        </div>
+        <div class="info-scroll-container">
+          <div class="info-section-3d">
+            <h4 class="info-title-3d">
+              <span class="icon-3d">👤</span>
+              Chức vụ
+            </h4>
+            <p class="info-text-3d">${char.title}</p>
+          </div>
+          <div class="info-section-3d">
+            <h4 class="info-title-3d">
+              <span class="icon-3d">📍</span>
+              Thông tin
+            </h4>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="label">Quê quán:</span>
+                <span class="value">${char.personal_info.hometown}</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Hoạt động:</span>
+                <span class="value">${char.personal_info.active_period}</span>
+              </div>
+            </div>
+          </div>
+          <div class="info-section-3d">
+            <h4 class="info-title-3d">
+              <span class="icon-3d">🏆</span>
+              Chiến công
+            </h4>
+            <ul class="achievements-list-3d">
+              ${char.contributions.slice(0, 3).map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
 
   const renderCover = () => (
-    <div className="book-spread-3d cover-spread-3d">
-      <div className="page-3d left-cover-3d">
+    <div className="book-spread-3d">
+      <div className="page-3d left-page">
         <div className="page-content-3d">
           <div className="cover-decoration"></div>
         </div>
       </div>
-      <div className="page-3d right-cover-3d" onClick={flipPageForward}>
+      <div className="page-3d right-page" onClick={flipForward}>
         <div className="page-content-3d">
           <div className="cover-star-3d">⭐</div>
           <h1 className="cover-title-3d gradient-text">
@@ -119,8 +215,8 @@ const Book3DFlip = () => {
   )
 
   const renderBackCover = () => (
-    <div className="book-spread-3d back-spread-3d">
-      <div className="page-3d left-back-3d" onClick={flipPageBackward}>
+    <div className="book-spread-3d">
+      <div className="page-3d left-page" onClick={flipBackward}>
         <div className="page-content-3d">
           <div className="back-quote-3d">
             "Không có gì quý hơn<br />độc lập, tự do"
@@ -133,7 +229,7 @@ const Book3DFlip = () => {
           <div className="click-hint">← Click để quay lại</div>
         </div>
       </div>
-      <div className="page-3d right-back-3d">
+      <div className="page-3d right-page">
         <div className="page-content-3d">
           <div className="back-logo-3d">
             <svg width="80" height="80" viewBox="0 0 32 32" fill="none">
@@ -160,118 +256,94 @@ const Book3DFlip = () => {
     </div>
   )
 
-  const renderCharacterSpread = (left?: Character, right?: Character) => (
-    <div className="book-spread-3d character-spread-3d">
-      {/* Left Page - First Character Image */}
-      <div className="page-3d left-page-3d" onClick={flipPageBackward}>
-        {left ? (
-          <div className="page-content-3d character-image-page">
-            <div className="image-container-3d">
-              <img src={left.image} alt={left.name} />
-              <div className="image-overlay-3d"></div>
-              <div className="image-label-3d">
-                <h3 className="gradient-text">{left.name}</h3>
-                <p>{left.personal_info.birth} - {left.personal_info.death}</p>
-              </div>
+  const renderCharacterPage = (char: Character) => (
+    <div className="book-spread-3d">
+      <div className="page-3d left-page" onClick={flipBackward}>
+        <div className="page-content-3d character-image-page">
+          <div className="image-container-3d">
+            <img src={char.image} alt={char.name} />
+            <div className="image-overlay-3d"></div>
+            <div className="image-label-3d">
+              <h3 className="gradient-text">{char.name}</h3>
+              <p>{char.personal_info.birth} - {char.personal_info.death}</p>
             </div>
-            <div className="click-hint">← Click để quay lại</div>
           </div>
-        ) : null}
+          <div className="click-hint">← Click để quay lại</div>
+        </div>
       </div>
-
-      {/* Right Page - First Character Info + Second Character */}
-      <div className="page-3d right-page-3d" onClick={flipPageForward}>
+      <div className="page-3d right-page" onClick={flipForward}>
         <div className="page-content-3d character-info-page">
-          {left && (
-            <div className="character-info-card">
-              <div className="info-header">
-                <div className="info-badge">Thông tin chi tiết</div>
+          <div className="character-info-card">
+            <div className="info-header">
+              <div className="info-badge">Thông tin chi tiết</div>
+            </div>
+
+            <div className="info-scroll-container">
+              <div className="info-section-3d">
+                <h4 className="info-title-3d">
+                  <span className="icon-3d">👤</span>
+                  Chức vụ
+                </h4>
+                <p className="info-text-3d">{char.title}</p>
               </div>
 
-              <div className="info-scroll-container">
-                <div className="info-section-3d">
-                  <h4 className="info-title-3d">
-                    <span className="icon-3d">👤</span>
-                    Chức vụ
-                  </h4>
-                  <p className="info-text-3d">{left.title}</p>
-                </div>
-
-                <div className="info-section-3d">
-                  <h4 className="info-title-3d">
-                    <span className="icon-3d">📍</span>
-                    Thông tin
-                  </h4>
-                  <div className="info-grid">
-                    <div className="info-item">
-                      <span className="label">Quê quán:</span>
-                      <span className="value">{left.personal_info.hometown}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="label">Hoạt động:</span>
-                      <span className="value">{left.personal_info.active_period}</span>
-                    </div>
+              <div className="info-section-3d">
+                <h4 className="info-title-3d">
+                  <span className="icon-3d">📍</span>
+                  Thông tin
+                </h4>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Quê quán:</span>
+                    <span className="value">{char.personal_info.hometown}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Hoạt động:</span>
+                    <span className="value">{char.personal_info.active_period}</span>
                   </div>
                 </div>
+              </div>
 
-                <div className="info-section-3d">
-                  <h4 className="info-title-3d">
-                    <span className="icon-3d">🏆</span>
-                    Chiến công
-                  </h4>
-                  <ul className="achievements-list-3d">
-                    {left.contributions.slice(0, 4).map((item, idx) => (
-                      <li key={idx}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="info-section-3d">
+                <h4 className="info-title-3d">
+                  <span className="icon-3d">🏆</span>
+                  Chiến công
+                </h4>
+                <ul className="achievements-list-3d">
+                  {char.contributions.slice(0, 4).map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
 
-                <div className="info-section-3d">
-                  <h4 className="info-title-3d">
-                    <span className="icon-3d">📜</span>
-                    Dấu mốc lịch sử
-                  </h4>
-                  <div className="timeline-3d">
-                    {left.timeline.slice(0, 4).map((event, idx) => (
-                      <div key={idx} className="timeline-item-3d">
-                        <div className="timeline-year-3d">{event.year}</div>
-                        <div className="timeline-event-3d">{event.event}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="info-section-3d quote-section-3d">
-                  <h4 className="info-title-3d">
-                    <span className="icon-3d">💬</span>
-                    Câu nói bất hủ
-                  </h4>
-                  <blockquote className="quote-3d">
-                    "{left.thoughts[0]}"
-                  </blockquote>
-                </div>
-
-                {right && (
-                  <>
-                    <div className="divider-3d"></div>
-
-                    <div className="next-character-preview">
-                      <p className="preview-label">Tiếp theo:</p>
-                      <div className="preview-card">
-                        <img src={right.image} alt={right.name} />
-                        <div className="preview-info">
-                          <h5 className="gradient-text">{right.name}</h5>
-                          <p>{right.title}</p>
-                        </div>
-                      </div>
+              <div className="info-section-3d">
+                <h4 className="info-title-3d">
+                  <span className="icon-3d">📜</span>
+                  Dấu mốc lịch sử
+                </h4>
+                <div className="timeline-3d">
+                  {char.timeline.slice(0, 3).map((event, idx) => (
+                    <div key={idx} className="timeline-item-3d">
+                      <div className="timeline-year-3d">{event.year}</div>
+                      <div className="timeline-event-3d">{event.event}</div>
                     </div>
-                  </>
-                )}
+                  ))}
+                </div>
+              </div>
+
+              <div className="info-section-3d quote-section-3d">
+                <h4 className="info-title-3d">
+                  <span className="icon-3d">💬</span>
+                  Câu nói bất hủ
+                </h4>
+                <blockquote className="quote-3d">
+                  "{char.thoughts[0]}"
+                </blockquote>
               </div>
             </div>
-          )}
+          </div>
 
-          {currentSpread < totalSpreads - 1 && (
+          {currentPage < totalPages - 1 && (
             <div className="click-hint">Click để lật trang →</div>
           )}
         </div>
@@ -279,75 +351,96 @@ const Book3DFlip = () => {
     </div>
   )
 
-  // Page flip animation variants
-  const pageVariants = {
-    initial: (direction: number) => ({
-      rotateY: direction > 0 ? 90 : -90,
-      opacity: 0,
-      scale: 0.8
-    }),
-    animate: {
-      rotateY: 0,
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0.43, 0.13, 0.23, 0.96]
-      }
-    },
-    exit: (direction: number) => ({
-      rotateY: direction > 0 ? -90 : 90,
-      opacity: 0,
-      scale: 0.8,
-      transition: {
-        duration: 0.8,
-        ease: [0.43, 0.13, 0.23, 0.96]
-      }
-    })
-  }
+  // Calculate page stack sizes
+  const leftPagesCount = currentPage
+  const rightPagesCount = totalPages - currentPage - 1
 
   return (
     <div className="book-scene-3d">
-      <div className="book-stage">
+      <div className="book-stage-3d">
         <motion.div
           ref={bookRef}
-          className={`book-container-3d ${isFlipping ? 'flipping' : ''}`}
-          initial={{ opacity: 0, scale: 0.9, y: 50 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          className="book-3d"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
         >
-          {/* Current spread with page flip animation */}
-          <AnimatePresence mode="wait" custom={isFlipping ? 1 : -1}>
-            <motion.div
-              key={currentSpread}
-              custom={isFlipping ? 1 : -1}
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="current-spread"
-              style={{
-                transformStyle: 'preserve-3d',
-                backfaceVisibility: 'hidden'
-              }}
-            >
-              {currentSpread === 0 && renderCover()}
-              {currentSpread === totalSpreads - 1 && renderBackCover()}
-              {currentSpread > 0 && currentSpread < totalSpreads - 1 && renderCharacterSpread(leftChar, rightChar)}
-            </motion.div>
-          </AnimatePresence>
+          {/* Left page stack */}
+          <div
+            className="page-stack left-stack"
+            style={{
+              width: `${leftPagesCount * 0.3}rem`,
+              display: leftPagesCount > 0 ? 'block' : 'none'
+            }}
+          >
+            {[...Array(Math.min(leftPagesCount, 20))].map((_, i) => (
+              <div
+                key={i}
+                className="stack-page"
+                style={{
+                  transform: `translateX(${-i * 0.5}px) translateZ(${-i * 2}px)`,
+                  opacity: 1 - (i * 0.02)
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Book pages */}
+          <div className="book-pages">
+            {currentPage === 0 && renderCover()}
+            {currentPage === totalPages - 1 && renderBackCover()}
+            {character && renderCharacterPage(character)}
+
+            {/* Flipping page with curl effect */}
+            {isFlipping && (
+              <div
+                ref={flippingPageRef}
+                className="flipping-page"
+                style={{
+                  transformOrigin: flipDirection === 'forward' ? 'right center' : 'left center'
+                }}
+              >
+                <div className="flipping-left page-face"></div>
+                <div className="flipping-right page-face"></div>
+                <div className="page-curl-shadow"></div>
+              </div>
+            )}
+          </div>
+
+          {/* Right page stack */}
+          <div
+            className="page-stack right-stack"
+            style={{
+              width: `${rightPagesCount * 0.3}rem`,
+              display: rightPagesCount > 0 ? 'block' : 'none'
+            }}
+          >
+            {[...Array(Math.min(rightPagesCount, 20))].map((_, i) => (
+              <div
+                key={i}
+                className="stack-page"
+                style={{
+                  transform: `translateX(${i * 0.5}px) translateZ(${-i * 2}px)`,
+                  opacity: 1 - (i * 0.02)
+                }}
+              />
+            ))}
+          </div>
 
           {/* Book spine */}
-          <div className="book-spine-3d"></div>
+          <div className="book-spine">
+            <div className="spine-texture"></div>
+            <div className="spine-line"></div>
+          </div>
         </motion.div>
       </div>
 
       {/* Navigation Controls */}
       <div className="book-controls-3d">
         <button
-          className={`control-btn prev-control ${currentSpread === 0 ? 'disabled' : ''}`}
-          onClick={flipPageBackward}
-          disabled={isFlipping || currentSpread === 0}
+          className={`control-btn ${currentPage === 0 ? 'disabled' : ''}`}
+          onClick={flipBackward}
+          disabled={isFlipping || currentPage === 0}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -355,22 +448,14 @@ const Book3DFlip = () => {
           <span>Quay lại</span>
         </button>
 
-        <div className="spread-indicator">
-          <div className="indicator-text">
-            Trang <span className="current">{currentSpread + 1}</span> / {totalSpreads}
-          </div>
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${((currentSpread + 1) / totalSpreads) * 100}%` }}
-            ></div>
-          </div>
+        <div className="page-indicator">
+          <span className="current">{currentPage + 1}</span> / {totalPages}
         </div>
 
         <button
-          className={`control-btn next-control ${currentSpread === totalSpreads - 1 ? 'disabled' : ''}`}
-          onClick={flipPageForward}
-          disabled={isFlipping || currentSpread === totalSpreads - 1}
+          className={`control-btn ${currentPage === totalPages - 1 ? 'disabled' : ''}`}
+          onClick={flipForward}
+          disabled={isFlipping || currentPage === totalPages - 1}
         >
           <span>Tiếp theo</span>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -379,7 +464,6 @@ const Book3DFlip = () => {
         </button>
       </div>
 
-      {/* Keyboard hint */}
       <div className="keyboard-hint-3d">
         <kbd>←</kbd> <kbd>→</kbd> để lật trang
       </div>
