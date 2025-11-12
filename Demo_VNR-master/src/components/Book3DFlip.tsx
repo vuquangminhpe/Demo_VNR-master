@@ -5,11 +5,9 @@ import { characters } from '../data/characters'
 import type { Character } from '../types'
 
 const Book3DFlip = () => {
-  const [currentSpread, setCurrentSpread] = useState(0) // 0 = cover, 1-5 = character spreads
+  const [currentSpread, setCurrentSpread] = useState(0)
   const [isFlipping, setIsFlipping] = useState(false)
-  const [flipDirection, setFlipDirection] = useState<'forward' | 'backward'>('forward')
   const bookRef = useRef<HTMLDivElement>(null)
-  const flippingPageRef = useRef<HTMLDivElement>(null)
 
   // Total spreads: cover + character spreads (2 characters per spread) + back cover
   const totalSpreads = Math.ceil(characters.length / 2) + 2
@@ -24,67 +22,27 @@ const Book3DFlip = () => {
 
   const [leftChar, rightChar] = getCurrentCharacters()
 
-  // Advanced page flip animation
   const flipPageForward = () => {
     if (isFlipping || currentSpread >= totalSpreads - 1) return
 
     setIsFlipping(true)
-    setFlipDirection('forward')
 
-    const page = flippingPageRef.current
-    if (!page) return
-
-    // GSAP timeline for realistic page flip
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setCurrentSpread(prev => prev + 1)
-        setIsFlipping(false)
-      }
-    })
-
-    // Flip animation with curl effect
-    tl.to(page, {
-      rotationY: -180,
-      duration: 1.2,
-      ease: 'power2.inOut',
-      transformOrigin: 'left center'
-    })
-    .to(page, {
-      boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
-      duration: 0.6,
-      ease: 'power2.in'
-    }, 0)
-    .to(page, {
-      boxShadow: '0 5px 20px rgba(0,0,0,0.2)',
-      duration: 0.6,
-      ease: 'power2.out'
-    }, 0.6)
+    // Immediately update state to show next spread
+    setTimeout(() => {
+      setCurrentSpread(prev => prev + 1)
+      setIsFlipping(false)
+    }, 800)
   }
 
   const flipPageBackward = () => {
     if (isFlipping || currentSpread <= 0) return
 
     setIsFlipping(true)
-    setFlipDirection('backward')
 
-    const page = flippingPageRef.current
-    if (!page) return
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setCurrentSpread(prev => prev - 1)
-        setIsFlipping(false)
-      }
-    })
-
-    tl.fromTo(page, {
-      rotationY: -180
-    }, {
-      rotationY: 0,
-      duration: 1.2,
-      ease: 'power2.inOut',
-      transformOrigin: 'left center'
-    })
+    setTimeout(() => {
+      setCurrentSpread(prev => prev - 1)
+      setIsFlipping(false)
+    }, 800)
   }
 
   // Keyboard navigation
@@ -104,13 +62,15 @@ const Book3DFlip = () => {
     if (!book) return
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (isFlipping) return
+
       const rect = book.getBoundingClientRect()
       const x = (e.clientX - rect.left - rect.width / 2) / rect.width
       const y = (e.clientY - rect.top - rect.height / 2) / rect.height
 
       gsap.to(book, {
-        rotationY: x * 8,
-        rotationX: -y * 8,
+        rotationY: x * 5,
+        rotationX: -y * 5,
         duration: 0.5,
         ease: 'power2.out'
       })
@@ -131,7 +91,7 @@ const Book3DFlip = () => {
       book.removeEventListener('mousemove', handleMouseMove)
       book.removeEventListener('mouseleave', handleMouseLeave)
     }
-  }, [])
+  }, [isFlipping])
 
   const renderCover = () => (
     <div className="book-spread-3d cover-spread-3d">
@@ -319,6 +279,33 @@ const Book3DFlip = () => {
     </div>
   )
 
+  // Page flip animation variants
+  const pageVariants = {
+    initial: (direction: number) => ({
+      rotateY: direction > 0 ? 90 : -90,
+      opacity: 0,
+      scale: 0.8
+    }),
+    animate: {
+      rotateY: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.43, 0.13, 0.23, 0.96]
+      }
+    },
+    exit: (direction: number) => ({
+      rotateY: direction > 0 ? -90 : 90,
+      opacity: 0,
+      scale: 0.8,
+      transition: {
+        duration: 0.8,
+        ease: [0.43, 0.13, 0.23, 0.96]
+      }
+    })
+  }
+
   return (
     <div className="book-scene-3d">
       <div className="book-stage">
@@ -329,29 +316,26 @@ const Book3DFlip = () => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
-          {/* Current spread */}
-          <AnimatePresence mode="wait">
+          {/* Current spread with page flip animation */}
+          <AnimatePresence mode="wait" custom={isFlipping ? 1 : -1}>
             <motion.div
               key={currentSpread}
+              custom={isFlipping ? 1 : -1}
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
               className="current-spread"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              style={{
+                transformStyle: 'preserve-3d',
+                backfaceVisibility: 'hidden'
+              }}
             >
               {currentSpread === 0 && renderCover()}
               {currentSpread === totalSpreads - 1 && renderBackCover()}
               {currentSpread > 0 && currentSpread < totalSpreads - 1 && renderCharacterSpread(leftChar, rightChar)}
             </motion.div>
           </AnimatePresence>
-
-          {/* Flipping page overlay */}
-          {isFlipping && (
-            <div ref={flippingPageRef} className="flipping-page-3d">
-              <div className="flipping-front"></div>
-              <div className="flipping-back"></div>
-            </div>
-          )}
 
           {/* Book spine */}
           <div className="book-spine-3d"></div>
