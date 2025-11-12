@@ -388,7 +388,7 @@
 .curling-page {
   position: absolute;
   top: 0;
-  width: 50%;
+  bottom: 0;
   height: 100%;
   transform-style: preserve-3d;
   z-index: 100;
@@ -398,6 +398,7 @@
 
 /* Forward curl (right page curls left) */
 .forward-curl {
+  left: 50%;
   right: 0;
   transform-origin: left center;
 }
@@ -409,6 +410,7 @@
 /* Backward curl (left page curls right) */
 .backward-curl {
   left: 0;
+  right: 50%;
   transform-origin: right center;
 }
 
