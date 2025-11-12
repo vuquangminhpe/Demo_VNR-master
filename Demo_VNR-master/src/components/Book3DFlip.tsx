@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
@@ -8,7 +9,7 @@ import LOGO from "../../public/image.png";
 const Book3DFlip = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
-  const [flipDirection, setFlipDirection] = useState<'forward' | 'backward'>('forward');
+  const [, setFlipDirection] = useState<"forward" | "backward">("forward");
   const bookRef = useRef<HTMLDivElement>(null);
   const forwardCurlRef = useRef<HTMLDivElement>(null);
   const backwardCurlRef = useRef<HTMLDivElement>(null);
@@ -29,7 +30,7 @@ const Book3DFlip = () => {
     if (isFlipping || currentPage >= totalPages - 1) return;
 
     setIsFlipping(true);
-    setFlipDirection('forward');
+    setFlipDirection("forward");
     const curlPage = forwardCurlRef.current;
 
     if (!curlPage) {
@@ -41,7 +42,7 @@ const Book3DFlip = () => {
     }
 
     // Add current page class for animation
-    curlPage.classList.add('animating-forward');
+    curlPage.classList.add("animating-forward");
     gsap.set(curlPage, { display: "block", opacity: 1 });
 
     // Realistic curl animation with multiple phases
@@ -49,7 +50,7 @@ const Book3DFlip = () => {
       onComplete: () => {
         setCurrentPage((prev) => prev + 1);
         gsap.set(curlPage, { display: "none", opacity: 0 });
-        curlPage.classList.remove('animating-forward');
+        curlPage.classList.remove("animating-forward");
         setIsFlipping(false);
       },
     });
@@ -58,20 +59,20 @@ const Book3DFlip = () => {
     tl.to(curlPage, {
       "--curl-progress": "0.2",
       duration: 0.25,
-      ease: "power1.in"
+      ease: "power1.in",
     })
-    // Phase 2: Main curl (20-80%)
-    .to(curlPage, {
-      "--curl-progress": "0.8",
-      duration: 0.7,
-      ease: "power2.inOut"
-    })
-    // Phase 3: Complete flip (80-100%)
-    .to(curlPage, {
-      "--curl-progress": "1",
-      duration: 0.25,
-      ease: "power1.out"
-    });
+      // Phase 2: Main curl (20-80%)
+      .to(curlPage, {
+        "--curl-progress": "0.8",
+        duration: 0.7,
+        ease: "power2.inOut",
+      })
+      // Phase 3: Complete flip (80-100%)
+      .to(curlPage, {
+        "--curl-progress": "1",
+        duration: 0.25,
+        ease: "power1.out",
+      });
   };
 
   // Backward page flip (left page curls right)
@@ -79,7 +80,7 @@ const Book3DFlip = () => {
     if (isFlipping || currentPage <= 0) return;
 
     setIsFlipping(true);
-    setFlipDirection('backward');
+    setFlipDirection("backward");
     const curlPage = backwardCurlRef.current;
 
     if (!curlPage) {
@@ -91,7 +92,7 @@ const Book3DFlip = () => {
     }
 
     // Add current page class for animation
-    curlPage.classList.add('animating-backward');
+    curlPage.classList.add("animating-backward");
     gsap.set(curlPage, { display: "block", opacity: 1 });
 
     // Realistic curl animation with multiple phases
@@ -99,7 +100,7 @@ const Book3DFlip = () => {
       onComplete: () => {
         setCurrentPage((prev) => prev - 1);
         gsap.set(curlPage, { display: "none", opacity: 0 });
-        curlPage.classList.remove('animating-backward');
+        curlPage.classList.remove("animating-backward");
         setIsFlipping(false);
       },
     });
@@ -108,20 +109,20 @@ const Book3DFlip = () => {
     tl.to(curlPage, {
       "--curl-progress": "0.2",
       duration: 0.25,
-      ease: "power1.in"
+      ease: "power1.in",
     })
-    // Phase 2: Main curl (20-80%)
-    .to(curlPage, {
-      "--curl-progress": "0.8",
-      duration: 0.7,
-      ease: "power2.inOut"
-    })
-    // Phase 3: Complete flip (80-100%)
-    .to(curlPage, {
-      "--curl-progress": "1",
-      duration: 0.25,
-      ease: "power1.out"
-    });
+      // Phase 2: Main curl (20-80%)
+      .to(curlPage, {
+        "--curl-progress": "0.8",
+        duration: 0.7,
+        ease: "power2.inOut",
+      })
+      // Phase 3: Complete flip (80-100%)
+      .to(curlPage, {
+        "--curl-progress": "1",
+        duration: 0.25,
+        ease: "power1.out",
+      });
   };
 
   // Keyboard navigation
