@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import Banner from '../components/Banner'
-import Book3DViewer from '../components/Book3DViewer'
+import Book3DFlip from '../components/Book3DFlip'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -70,7 +70,7 @@ const HomePage = () => {
       </motion.section>
 
       {/* 3D Book Viewer - Main Content */}
-      <Book3DViewer />
+      <Book3DFlip />
 
       {/* Call to Action */}
       <motion.section
