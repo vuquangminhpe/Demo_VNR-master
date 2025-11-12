@@ -6,6 +6,15 @@
   position: relative;
 }
 
+/* Introduction Description */
+.intro-description {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 /* Intro Section */
 .intro-section {
   background: var(--color-background);
@@ -547,4 +556,55 @@ html {
     var(--color-surface) 100%
   );
   background-size: 1000px 100%;
+}
+
+/* Call to Action Section */
+.cta-section {
+  background: var(--color-background-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 1000px;
+  background: var(--gradient-radial-red);
+  opacity: 0.1;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.cta-content {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-content h2 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin: 0;
+}
+
+.cta-content p {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.cta-btn {
+  font-size: 1.1rem;
+  padding: 1.25rem 3rem;
 }
