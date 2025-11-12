@@ -1,0 +1,337 @@
+[
+  {
+    "id": 1,
+    "name": "Hồ Chí Minh",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaAi7RqwaMw0uuzY7_OtvPTArtHu6rx1CKAA&s",
+    "title": "Chủ tịch nước Việt Nam Dân chủ Cộng hòa, Người sáng lập Đảng Cộng sản Việt Nam",
+    "personal_info": {
+      "birth": "19/05/1890",
+      "death": "02/09/1969",
+      "hometown": "Kim Liên, Nam Đàn, Nghệ An",
+      "active_period": "1911 - 1969",
+      "party_membership": "Từ năm 1930"
+    },
+    "description": "Chủ tịch Hồ Chí Minh là lãnh tụ vĩ đại của cách mạng Việt Nam, người sáng lập Đảng Cộng sản Việt Nam và là linh hồn của cuộc đấu tranh giành độc lập dân tộc. Tư tưởng, đạo đức và phong cách của Người đã trở thành kim chỉ nam cho cách mạng Việt Nam.",
+    "timeline": [
+      { "year": "1911", "event": "Ra đi tìm đường cứu nước tại Bến Nhà Rồng", "image": "https://ulis.vnu.edu.vn/files/uploads/2024/05/bac-di-tim-duong-cuu-nuoc.jpg" },
+      { "year": "1930", "event": "Sáng lập Đảng Cộng sản Việt Nam tại Hồng Kông", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUWNlXwe_4ayprhF_3G0LW2zi60EbhlUW2ug&s" },
+      { "year": "1941", "event": "Trở về Pác Bó lãnh đạo phong trào cách mạng", "image": "https://d4.violet.vn/uploads/blogs/735185/1_04.jpg" },
+      { "year": "1945", "event": "Đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình", "image": "https://media.baovanhoa.vn/zoom/1000/uploaded/nghiemthanh/2025_09_01/1_FOVV.png" }
+    ],
+    "contributions": [
+      "Sáng lập Đảng Cộng sản Việt Nam (1930)",
+      "Đưa Việt Nam giành độc lập năm 1945",
+      "Hình thành tư tưởng Hồ Chí Minh – nền tảng tư tưởng của Đảng",
+      "Cống hiến cho phong trào cộng sản quốc tế"
+    ],
+    "thoughts": [
+      "Độc lập dân tộc gắn liền với chủ nghĩa xã hội.",
+      "Lấy dân làm gốc – mọi việc vì lợi ích của nhân dân.",
+      "Đạo đức cách mạng: Cần, Kiệm, Liêm, Chính, Chí công vô tư."
+    ],
+    "resources": [
+      { "type": "quote", "content": "Không có gì quý hơn độc lập, tự do.", "source": "Phát biểu năm 1966" },
+      { "type": "video", "url": "https://www.youtube.com/embed/MkiONFufYbE", "source": "Đài Truyền hình Việt Nam" },
+      { "type": "image", "url": "https://bcp.cdnchinhphu.vn/334894974524682240/2023/3/10/11-1579-167841298017618299511.jpg", "source": "Tư liệu quốc gia" }
+    ],
+    "related": [2, 3, 4],
+    "domains": ["chinh_tri", "tu_tuong", "ngoai_giao"]
+  },
+  {
+    "id": 2,
+    "name": "Trường Chinh",
+    "image": "https://i0.wp.com/ivanlevanlan.wordpress.com/wp-content/uploads/2025/02/d22bf0f37fb242d3392c2116e35ce968.jpg?resize=816%2C580&ssl=1",
+    "title": "Tổng Bí thư Đảng Cộng sản Việt Nam (1941–1956, 1986)",
+    "personal_info": {
+      "birth": "09/02/1907",
+      "death": "30/09/1988",
+      "hometown": "Xuân Hòa, Nam Đàn, Nghệ An",
+      "active_period": "1930 - 1986",
+      "party_membership": "Từ năm 1930"
+    },
+    "description": "Trường Chinh là nhà lý luận chính trị xuất sắc, góp phần xây dựng nền tảng tư tưởng và chiến lược phát triển cách mạng Việt Nam. Ông có công lớn trong kháng chiến chống Pháp, chống Mỹ và thời kỳ Đổi mới.",
+    "timeline": [
+      { "year": "1930", "event": "Gia nhập Đảng Cộng sản Đông Dương", "image": "https://file3.qdnd.vn/data/images/0/2025/01/27/upload_2237/7.png?dpi=150&quality=100&w=870" },
+      { "year": "1941", "event": "Giữ chức Tổng Bí thư thay Hà Huy Tập", "image": "https://baonamdinh.vn/file/e7837c02816d130b0181a995d7ad7e96/dataimages/202012/original/images1328961___ng_ch__Tr__ng_Chinh_d__H_i_ngh__th_ng_nh_t_Vi_t_Minh___Li_n_Vi_t__th_ng_3_1951.jpg" },
+      { "year": "1945", "event": "Tham gia lãnh đạo Cách mạng Tháng Tám", "image": "https://file3.qdnd.vn/data/images/0/2025/01/27/upload_2237/5.png?dpi=150&quality=100&w=870" },
+      { "year": "1986", "event": "Đề xuất đường lối Đổi mới", "image": "https://file3.qdnd.vn/data/images/0/2025/01/27/upload_2237/11.png?dpi=150&quality=100&w=870" }
+    ],
+    "contributions": [
+      "Đề xuất chủ trương 'Kháng chiến toàn dân, toàn diện, lâu dài'.",
+      "Đóng góp to lớn trong công cuộc Đổi mới 1986.",
+      "Soạn thảo nhiều văn kiện quan trọng của Đảng."
+    ],
+    "thoughts": [
+      "Lấy dân làm trung tâm của công cuộc xây dựng chủ nghĩa xã hội.",
+      "Đổi mới tư duy kinh tế, phát triển đất nước bền vững."
+    ],
+    "resources": [
+      { "type": "quote", "content": "Đổi mới nhưng không đổi màu.", "source": "Phát biểu năm 1986" },
+      { "type": "pdf", "url": "https://tulieuvankien.dangcongsan.vn/publish/thumbnail/3000006/480x720xfull/upload/3000006/20251024/1fff572f6647e4b96b4f6fd1e79e90e6vkd_1.jpg", "source": "Văn kiện Đảng Toàn tập" }
+    ],
+    "related": [1, 3, 6],
+    "domains": ["chinh_tri", "tu_tuong"]
+  },
+  {
+    "id": 3,
+    "name": "Võ Nguyên Giáp",
+    "image": "https://www.quangbinh.gov.vn/3cms/upload/qbportal/Image/TintucSuKien/2015/7/DT500cn.jpg",
+    "title": "Đại tướng đầu tiên của Quân đội nhân dân Việt Nam",
+    "personal_info": {
+      "birth": "25/08/1911",
+      "death": "04/10/2013",
+      "hometown": "Lộc Thủy, Quảng Bình",
+      "active_period": "1930 - 2013",
+      "party_membership": "Từ năm 1931"
+    },
+    "description": "Võ Nguyên Giáp là vị tướng huyền thoại, nhà quân sự lỗi lạc, người chỉ huy chiến thắng Điện Biên Phủ 1954 và góp phần quyết định vào thắng lợi 1975.",
+    "timeline": [
+      { "year": "1944", "event": "Thành lập Đội Việt Nam Tuyên truyền Giải phóng quân", "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Vo_Nguyen_Giap%2C_Vietminh_forces%2C_1944.jpg/1200px-Vo_Nguyen_Giap%2C_Vietminh_forces%2C_1944.jpg" },
+      { "year": "1954", "event": "Chỉ huy chiến dịch Điện Biên Phủ thắng lợi", "image": "https://file3.qdnd.vn/data/images/0/2024/04/07/upload_2072/dai%20tuong%20vo%20nguyen%20giao.jpg?dpi=150&quality=100&w=870" },
+      { "year": "1975", "event": "Tham gia chỉ đạo Chiến dịch Hồ Chí Minh", "image": "https://baohaiquanvietnam.vn/storage/users/user_6/N%C4%82M%202025/Th%C3%A1ng%204/7-5/vo-nguyen-giap-070425-1.jpeg" }
+    ],
+    "contributions": [
+      "Tổng Tư lệnh Quân đội nhân dân Việt Nam đầu tiên.",
+      "Chỉ huy chiến thắng Điện Biên Phủ 'lừng lẫy năm châu, chấn động địa cầu'.",
+      "Đóng góp vào chiến thắng 1975 thống nhất đất nước."
+    ],
+    "thoughts": [
+      "Chiến tranh nhân dân là chiến tranh toàn dân.",
+      "Không có gì mạnh bằng sức mạnh lòng dân."
+    ],
+    "resources": [
+      { "type": "video", "url": "https://www.youtube.com/watch?v=l2CKxQ_xf74", "source": "Báo Nhân Dân" },
+      { "type": "image", "url": "https://cdn-i.vtcnews.vn/files/huu.danh/2018/10/04/img_4209-4-1524114.jpg", "source": "Bảo tàng Quân đội" }
+    ],
+    "related": [1, 2, 4],
+    "domains": ["quan_su", "chinh_tri"]
+  },
+  {
+    "id": 4,
+    "name": "Lê Duẩn",
+    "image": "https://nguoikesu.com/images/wiki/le-duan/a5ba4823ffccc133a86a6b5bc7590a06.jpg",
+    "title": "Tổng Bí thư Đảng Cộng sản Việt Nam (1960–1986)",
+    "personal_info": {
+      "birth": "07/04/1907",
+      "death": "10/07/1986",
+      "hometown": "Triệu Thành, Triệu Phong, Quảng Trị",
+      "active_period": "1930 - 1986",
+      "party_membership": "Từ năm 1930"
+    },
+    "description": "Lê Duẩn là người kế tục xuất sắc sự nghiệp cách mạng Hồ Chí Minh, Tổng Bí thư trong suốt 26 năm – thời kỳ kháng chiến chống Mỹ và thống nhất đất nước.",
+    "timeline": [
+      { "year": "1930", "event": "Tham gia thành lập Đảng Cộng sản Việt Nam", "image": "http://old.hoalo.vn/DataFiles/2017/05/News/1phan%204.jpg" },
+      { "year": "1954", "event": "Soạn thảo Đề cương cách mạng miền Nam", "image": "https://camau.gov.vn/Datafiles/camau-gov-vn/wps/wcm/connect/dde6b9d8-636b-4432-87cd-a70c7bd393c9/1/mit-2btinh-jpg-3fmod-3dajperes-26amp-3bcvid-3d.png" },
+      { "year": "1975", "event": "Lãnh đạo toàn quốc thống nhất đất nước", "image": "https://nguonluc.com.vn/uploads/images/2023/04/28/le-duan-070422-1682655728.jpg" }
+    ],
+    "contributions": [
+      "Đề ra chiến lược cách mạng miền Nam.",
+      "Đóng vai trò chủ chốt trong thống nhất đất nước.",
+      "Lãnh đạo giai đoạn đầu xây dựng xã hội chủ nghĩa."
+    ],
+    "thoughts": [
+      "Độc lập dân tộc gắn liền với tự do hạnh phúc của nhân dân.",
+      "Kiên định con đường xã hội chủ nghĩa."
+    ],
+    "resources": [
+      { "type": "quote", "content": "Miền Nam luôn trong trái tim ta.", "source": "Thư gửi đồng bào miền Nam 1964" }
+    ],
+    "related": [1, 2, 3],
+    "domains": ["chinh_tri"]
+  },
+  {
+    "id": 5,
+    "name": "Phạm Văn Đồng",
+    "image": "https://nguoikesu.com/images/wiki/pham-van-dong/73153adbd537bc8c0eb187c04d4c7a6b.jpg",
+    "title": "Thủ tướng Chính phủ Việt Nam (1955–1987)",
+    "personal_info": {
+      "birth": "01/03/1906",
+      "death": "29/04/2000",
+      "hometown": "Đức Tân, Mộ Đức, Quảng Ngãi",
+      "active_period": "1930 - 1987",
+      "party_membership": "Từ năm 1930"
+    },
+    "description": "Phạm Văn Đồng là nhà ngoại giao, nhà lãnh đạo xuất sắc, người học trò gần gũi của Chủ tịch Hồ Chí Minh, có công lớn trong xây dựng nền ngoại giao Việt Nam hiện đại.",
+    "timeline": [
+      { "year": "1945", "event": "Giữ chức Bộ trưởng Bộ Tài chính", "image": "https://media.vietnamplus.vn/images/7e787db3592af84841804c054a22a3a7b876e3dbde6b076590547f3b68b8cfbfb71b4ff62e25a4b1ae1ab9b736a5ad5aae67a1122a9b60b0d41c3ff26655c808a74f6b1bfe70b3203772c7979020cefa/co_thu_tuong_pham_van_dong_1.jpg" },
+      { "year": "1954", "event": "Trưởng phái đoàn ký Hiệp định Geneva", "image": "https://media.vietnamplus.vn/images/7e787db3592af84841804c054a22a3a7b876e3dbde6b076590547f3b68b8cfbfb71b4ff62e25a4b1ae1ab9b736a5ad5a0c16058f5604c3a15e803f23175cfcdba74f6b1bfe70b3203772c7979020cefa/co_thu_tuong_pham_van_dong_2.jpg" },
+      { "year": "1976", "event": "Tiếp tục giữ chức Thủ tướng sau thống nhất", "image": "https://media.vietnamplus.vn/images/7e787db3592af84841804c054a22a3a7b876e3dbde6b076590547f3b68b8cfbfb71b4ff62e25a4b1ae1ab9b736a5ad5aa39fb1913aaffc3c7cb0bd343a25f716a74f6b1bfe70b3203772c7979020cefa/co_thu_tuong_pham_van_dong_8.jpg" }
+    ],
+    "contributions": [
+      "Đại diện Việt Nam ký Hiệp định Geneva 1954.",
+      "Lãnh đạo phát triển kinh tế - xã hội sau thống nhất.",
+      "Đặt nền móng ngoại giao độc lập, tự chủ."
+    ],
+    "thoughts": [
+      "Độc lập phải đi đôi với phát triển bền vững.",
+      "Đoàn kết dân tộc là sức mạnh của cách mạng."
+    ],
+    "resources": [
+      { "type": "image", "url": "https://moha.gov.vn/Media_Share/BoNoiVu/DATA/2015/09/cac_sach_img-17_11_00_919.jpg", "source": "Lưu trữ quốc gia" }
+    ],
+    "related": [1, 4, 6],
+    "domains": ["ngoai_giao", "chinh_tri"]
+  },
+  {
+    "id": 6,
+    "name": "Nguyễn Chí Thanh",
+    "image": "http://c3nguyenchithanh.daknong.edu.vn/wp-content/uploads/2015/01/nct.jpg",
+    "title": "Đại tướng, Chủ nhiệm Tổng cục Chính trị Quân đội nhân dân Việt Nam",
+    "personal_info": {
+      "birth": "01/11/1914",
+      "death": "06/07/1967",
+      "hometown": "Quảng Điền, Thừa Thiên - Huế",
+      "active_period": "1937 - 1967",
+      "party_membership": "Từ năm 1937"
+    },
+    "description": "Nguyễn Chí Thanh là vị tướng tài ba, nhà chính trị kiên trung, từng giữ vai trò quan trọng trong công cuộc kháng chiến chống Mỹ.",
+    "timeline": [
+      { "year": "1945", "event": "Tham gia Cách mạng Tháng Tám", "image": "https://file3.qdnd.vn/data/images/0/2023/12/31/upload_1021/7.jpg?dpi=150&quality=100&w=870" },
+      { "year": "1959", "event": "Được phong quân hàm Đại tướng", "image": "https://images.hcmcpv.org.vn//Uploads/Image/3012202377B620F3/22_Chi%20Thanh_png.png" },
+      { "year": "1967", "event": "Hy sinh khi chuẩn bị về chiến trường miền Nam", "image": "https://special.nhandan.vn/Dai-tuong-Nguyen-Chi-Thanh-nguoi-cong-san-kien-trung/assets/6EF3PAqMiW/nct7-1180x804.jpg" }
+    ],
+    "contributions": [
+      "Xây dựng Quân đội nhân dân vững mạnh về chính trị.",
+      "Đưa ra chủ trương 'Nông thôn mới kiểu mẫu'."
+    ],
+    "thoughts": [
+      "Chiến đấu không chỉ bằng vũ khí mà bằng niềm tin của nhân dân."
+    ],
+    "resources": [
+      { "type": "quote", "content": "Đánh cho Mỹ cút, đánh cho Ngụy nhào.", "source": "Phát biểu năm 1966" }
+    ],
+    "related": [3, 4, 5],
+    "domains": ["quan_su", "chinh_tri"]
+  },
+  {
+    "id": 7,
+    "name": "Tôn Đức Thắng",
+    "image": "https://images.baoangiang.com.vn/image/fckeditor/upload/2021/20210818/images/3aa.jpg",
+    "title": "Chủ tịch nước Cộng hòa Xã hội Chủ nghĩa Việt Nam (1969–1980)",
+    "personal_info": {
+      "birth": "20/08/1888",
+      "death": "30/03/1980",
+      "hometown": "Mỹ Hòa Hưng, Long Xuyên, An Giang",
+      "active_period": "1910 - 1980",
+      "party_membership": "Từ năm 1930"
+    },
+    "description": "Tôn Đức Thắng là nhà cách mạng tiền bối, người kế nhiệm Hồ Chí Minh giữ chức Chủ tịch nước, suốt đời cống hiến cho giai cấp công nhân và nhân dân lao động.",
+    "timeline": [
+      { "year": "1919", "event": "Tham gia phong trào công nhân tại Pháp", "image": "https://cdn.tienphong.vn/images/814b5533c866dc3540018a126103e9350c29625e46c9f5774d3c779a6f3a6fa4b0c671b881a25bf6b889012f70b2f73727fd76d97607949ff8ba3c3de5996335/t10_2__ODJI.png" },
+      { "year": "1945", "event": "Giữ chức Chủ tịch Ủy ban kháng chiến Nam Bộ", "image": "https://file.qdnd.vn/data/images/0/2018/08/16/dieuthuy/tdt6.jpg?w=575" },
+      { "year": "1969", "event": "Trở thành Chủ tịch nước sau khi Hồ Chí Minh qua đời", "image": "https://congdoan.lhu.edu.vn/Data/News/174/images/Ton_Duc_Thang.jpg" }
+    ],
+    "contributions": [
+      "Người sáng lập Công hội bí mật Sài Gòn (1920).",
+      "Góp phần phát triển phong trào công nhân Việt Nam.",
+      "Giữ vai trò biểu tượng của tinh thần đoàn kết."
+    ],
+    "thoughts": [
+      "Người lãnh đạo là người phục vụ nhân dân."
+    ],
+    "resources": [
+      { "type": "image", "url": "https://cdn.vntrip.vn/cam-nang/wp-content/uploads/2017/09/1-19.jpg", "source": "Bảo tàng Tôn Đức Thắng" }
+    ],
+    "related": [1, 4, 5],
+    "domains": ["chinh_tri", "tu_tuong"]
+  },
+  {
+    "id": 8,
+    "name": "Nguyễn Văn Linh",
+    "image": "https://upload.wikimedia.org/wikipedia/vi/4/45/Nguy%E1%BB%85n_V%C4%83n_Linh.jpg",
+    "title": "Tổng Bí thư Đảng Cộng sản Việt Nam (1986–1991)",
+    "personal_info": {
+      "birth": "01/07/1915",
+      "death": "27/04/1998",
+      "hometown": "Hưng Yên",
+      "active_period": "1930 - 1991",
+      "party_membership": "Từ năm 1930"
+    },
+    "description": "Nguyễn Văn Linh là người khởi xướng công cuộc Đổi mới (1986), đưa Việt Nam bước vào thời kỳ hội nhập và phát triển kinh tế thị trường định hướng xã hội chủ nghĩa.",
+    "timeline": [
+      { "year": "1986", "event": "Được bầu làm Tổng Bí thư khóa VI", "image": "https://media.vietnamplus.vn/images/fbc23bef0d088b23a8965bce49f85a61c9cc8d6742b3dadd9b6246ec44465466f051f4613a0f4e905c89275934cfbe4cfe0f0bcc3b55088f6f8c3da75542dcd0/nguyenvanlinh_1.jpeg" },
+      { "year": "1987", "event": "Khởi xướng phong trào 'Nói và làm'", "image": "https://hnm.1cdn.vn/2020/06/26/hanoimoi.com.vn-uploads-images-phananh-2020-06-26-_nvl2.jpg" }
+    ],
+    "contributions": [
+      "Khởi xướng Đổi mới toàn diện.",
+      "Thúc đẩy dân chủ trong quản lý và lãnh đạo.",
+      "Cải cách kinh tế thị trường định hướng XHCN."
+    ],
+    "thoughts": [
+      "Hãy tự cứu mình trước khi trời cứu.",
+      "Cần có tư duy đổi mới, tránh bảo thủ, trì trệ."
+    ],
+    "resources": [
+      { "type": "quote", "content": "Nói đi đôi với làm.", "source": "Báo Nhân Dân, 1987" }
+    ],
+    "related": [2, 5, 9],
+    "domains": ["chinh_tri", "kinh_te"]
+  },
+  {
+    "id": 9,
+    "name": "Phạm Hùng",
+    "image": "https://upload.wikimedia.org/wikipedia/vi/9/94/Ph%E1%BA%A1m_H%C3%B9ng.gif",
+    "title": "Thủ tướng Chính phủ Việt Nam (1987–1988)",
+    "personal_info": {
+      "birth": "11/06/1912",
+      "death": "23/03/1988",
+      "hometown": "Long Hồ, Vĩnh Long",
+      "active_period": "1930 - 1988",
+      "party_membership": "Từ năm 1930"
+    },
+    "description": "Phạm Hùng là nhà lãnh đạo kiên trung, từng giữ nhiều chức vụ quan trọng trong Đảng và Nhà nước, có công lớn trong thống nhất đất nước và xây dựng chính quyền nhân dân.",
+    "timeline": [
+      { "year": "1945", "event": "Tham gia kháng chiến chống Pháp", "image": "https://vinhlong.edu.vn/upload/21027/fck/files/CTHDBT_PhamHung_1.jpg" },
+      { "year": "1975", "event": "Giữ chức Bộ trưởng Bộ Nội vụ", "image": "https://ubkttw.vn/upload/104764/fck/adminkttu/%C4%90C%20Ph%E1%BA%A1m%20H%C3%B9ng.png" },
+      { "year": "1987", "event": "Được bổ nhiệm Thủ tướng Chính phủ", "image": "https://ttdn.vn/Uploads/Images/2022/6/11/5/7945-13.2.jpg" }
+    ],
+    "contributions": [
+      "Xây dựng hệ thống an ninh nhân dân.",
+      "Góp phần củng cố bộ máy nhà nước XHCN.",
+      "Lãnh đạo quá trình Đổi mới hành chính."
+    ],
+    "thoughts": [
+      "Đảng phải luôn gần dân, hiểu dân và vì dân."
+    ],
+    "resources": [
+      { "type": "image", "url": "https://www.nxbctqg.org.vn/img_data/images/027953927469_pham-hung.png", "source": "TTXVN" }
+    ],
+    "related": [8, 10],
+    "domains": ["chinh_tri"]
+  },
+  {
+    "id": 10,
+    "name": "Võ Văn Kiệt",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Mr._Vo_Van_Kiet.jpg/500px-Mr._Vo_Van_Kiet.jpg",
+    "title": "Thủ tướng Chính phủ Việt Nam (1991–1997)",
+    "personal_info": {
+      "birth": "23/11/1922",
+      "death": "11/06/2008",
+      "hometown": "Vũng Liêm, Vĩnh Long",
+      "active_period": "1939 - 1997",
+      "party_membership": "Từ năm 1939"
+    },
+    "description": "Võ Văn Kiệt là nhà lãnh đạo đổi mới, có tầm nhìn chiến lược và tư duy hiện đại, góp phần thúc đẩy kinh tế Việt Nam hội nhập quốc tế.",
+    "timeline": [
+      { "year": "1975", "event": "Chỉ huy tiếp quản Sài Gòn sau giải phóng", "image": "https://thanhnien.mediacdn.vn/Uploaded/hoangnam/2022_11_16/a1-1686.jpg" },
+      { "year": "1991", "event": "Giữ chức Thủ tướng Chính phủ", "image": "https://i1-kinhdoanh.vnecdn.net/2022/11/23/kiet-1-jpeg-4046-1669144830.jpg?w=0&h=0&q=100&dpr=1&fit=crop&s=gA5rgjh6vgenqLCtYZlR-A" },
+      { "year": "1995", "event": "Đưa Việt Nam gia nhập ASEAN", "image": "https://cdn-i.vtcnews.vn/files/f2/2015/07/13/thu-tuong-vo-van-kiet-va-bai-phong-van-lay-dong-hang-trieu-trai-tim-my-0.jpg" }
+    ],
+    "contributions": [
+      "Lãnh đạo công cuộc khôi phục kinh tế sau chiến tranh.",
+      "Khởi xướng nhiều chính sách hội nhập quốc tế.",
+      "Đóng góp lớn vào phát triển hạ tầng quốc gia (điện, đường, cầu)."
+    ],
+    "thoughts": [
+      "Cải cách là để phục vụ dân, không phải để tạo quyền lực mới.",
+      "Cần tôn trọng sự khác biệt vì mục tiêu chung của đất nước."
+    ],
+    "resources": [
+      { "type": "video", "url": "https://www.youtube.com/watch?v=xfSvA0W6TG8", "source": "VTV Lưu trữ" }
+    ],
+    "related": [8, 9],
+    "domains": ["chinh_tri", "kinh_te"]
+  }
+]
+
+

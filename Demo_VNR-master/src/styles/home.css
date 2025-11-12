@@ -1,0 +1,168 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.intro-section {
+  padding-top: 5rem;
+}
+
+.intro-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3rem;
+  align-items: center;
+}
+
+.intro-text h1 {
+  font-size: clamp(2.5rem, 5vw, 3.4rem);
+  margin-bottom: 1rem;
+}
+
+.intro-text p {
+  margin: 0 0 1.5rem;
+  color: var(--color-subtle);
+}
+
+.intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.intro-stats {
+  display: grid;
+  gap: 1rem;
+}
+
+.stat-card {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.weekly-highlight {
+  background: linear-gradient(135deg, rgba(178, 34, 34, 0.08), rgba(178, 34, 34, 0.03));
+  padding: 4rem 0;
+}
+
+.weekly-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3rem;
+  padding: 2rem;
+}
+
+.weekly-media img {
+  border-radius: var(--radius-lg);
+  height: 100%;
+}
+
+.weekly-content .weekly-title {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.weekly-content .weekly-quote {
+  font-style: italic;
+  margin: 1.5rem 0;
+}
+
+.weekly-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-subtle);
+}
+
+.featured-events {
+  background: var(--color-surface);
+  padding: 4rem 0;
+}
+
+.event-groups {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.event-group h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.event-card {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 160px 1fr;
+}
+
+.event-thumb img {
+  height: 100%;
+}
+
+.event-body {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.event-body h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.event-body p {
+  margin: 0;
+  color: var(--color-subtle);
+  flex: 1;
+}
+
+.event-link {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+@media (max-width: 960px) {
+  .intro-layout,
+  .weekly-card {
+    grid-template-columns: 1fr;
+  }
+
+  .weekly-media img {
+    max-height: 420px;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-page {
+    gap: 3rem;
+  }
+
+  .weekly-card,
+  .event-card {
+    padding: 1.5rem;
+  }
+
+  .weekly-meta {
+    gap: 1rem;
+    flex-direction: column;
+  }
+}
