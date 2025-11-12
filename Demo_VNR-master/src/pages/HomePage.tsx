@@ -1,8 +1,14 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, useInView } from 'framer-motion'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Lenis from 'lenis'
 import Banner from '../components/Banner'
 import { characters } from '../data/characters'
 import type { Character } from '../types'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const featuredEvents = [
   {
@@ -71,7 +77,40 @@ const groupEventsByPhase = () => {
   return Array.from(phaseMap.entries())
 }
 
+// Animation variants for Framer Motion
+const fadeInUp = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] }
+  }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+}
+
+const scaleIn = {
+  hidden: { scale: 0.8, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: { duration: 0.5, ease: [0.6, -0.05, 0.01, 0.99] }
+  }
+}
+
 const HomePage = () => {
+  const lenisRef = useRef<Lenis | null>(null)
+  const introRef = useRef<HTMLElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
+
   const weeklyCharacter = useMemo(() => {
     if (characters.length === 0) return undefined
     const index = computeWeekIndex(characters)
@@ -85,16 +124,77 @@ const HomePage = () => {
     return weeklyCharacter.thoughts[0]
   }, [weeklyCharacter])
 
-  return (
-    <div className="home-page">
-      <Banner />
+  // Initialize Lenis smooth scroll
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true
+    })
 
-      <section className="intro-section">
+    lenisRef.current = lenis
+
+    function raf(time: number) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+
+    return () => {
+      lenis.destroy()
+    }
+  }, [])
+
+  // GSAP ScrollTrigger animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Animate stat numbers
+      const statNumbers = statsRef.current?.querySelectorAll('.stat-number')
+      statNumbers?.forEach((stat) => {
+        const target = stat.textContent?.replace('+', '').replace('%', '') || '0'
+        const isPercentage = stat.textContent?.includes('%')
+        const hasPlus = stat.textContent?.includes('+')
+
+        gsap.from(stat, {
+          textContent: 0,
+          duration: 2,
+          ease: 'power1.out',
+          snap: { textContent: 1 },
+          scrollTrigger: {
+            trigger: stat,
+            start: 'top 80%',
+            once: true
+          },
+          onUpdate: function() {
+            const value = Math.ceil(parseFloat(this.targets()[0].textContent))
+            this.targets()[0].textContent = value + (isPercentage ? '%' : hasPlus ? '+' : '')
+          }
+        })
+      })
+    })
+
+    return () => ctx.revert()
+  }, [])
+
+  const IntroSection = () => {
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, amount: 0.3 })
+
+    return (
+      <motion.section
+        ref={ref}
+        className="intro-section section"
+        initial="hidden"
+        animate={isInView ? 'visible' : 'hidden'}
+        variants={staggerContainer}
+      >
         <div className="container intro-layout">
-          <div className="intro-text">
+          <motion.div className="intro-text" variants={fadeInUp}>
             <p className="kicker">Không gian lịch sử Việt Nam</p>
-            <h1>"Dấu ấn Người Cộng sản"</h1>
-            <p>
+            <h1 className="gradient-text">"Dấu ấn Người Cộng sản"</h1>
+            <p className="intro-description">
               Nơi lưu giữ hành trình của những con người đã làm nên lịch sử dân tộc Việt Nam –
               những người cộng sản kiên trung, trí tuệ và tận hiến cho Tổ quốc. Hãy cùng khám phá
               tinh thần cách mạng và những giá trị trường tồn của dân tộc.
@@ -103,84 +203,152 @@ const HomePage = () => {
               <Link className="btn primary" to="/nhan-vat">
                 Khám phá nhân vật
               </Link>
-              <a className="btn ghost" href="#featured-events">
+              <a className="btn secondary" href="#featured-events">
                 Sự kiện tiêu biểu
               </a>
             </div>
-          </div>
-          <div className="intro-stats">
-            <div className="stat-card">
-              <span className="stat-number">{characters.length}+</span>
-              <p>Chân dung lãnh tụ và nhà cách mạng</p>
-            </div>
-            <div className="stat-card">
-              <span className="stat-number">4</span>
-              <p>Giai đoạn lịch sử trọng yếu</p>
-            </div>
-            <div className="stat-card">
-              <span className="stat-number">100%</span>
-              <p>Tư liệu được kiểm chứng</p>
-            </div>
-          </div>
-        </div>
-      </section>
+          </motion.div>
 
-      {weeklyCharacter && (
-        <section className="weekly-highlight">
-          <div className="container weekly-card">
-            <div className="weekly-media">
+          <motion.div ref={statsRef} className="intro-stats" variants={staggerContainer}>
+            {[
+              { number: characters.length, suffix: '+', label: 'Chân dung lãnh tụ và nhà cách mạng' },
+              { number: 4, suffix: '', label: 'Giai đoạn lịch sử trọng yếu' },
+              { number: 100, suffix: '%', label: 'Tư liệu được kiểm chứng' }
+            ].map((stat, index) => (
+              <motion.div key={index} className="stat-card glass" variants={scaleIn}>
+                <span className="stat-number gradient-text">
+                  {stat.number}{stat.suffix}
+                </span>
+                <p className="stat-label">{stat.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+    )
+  }
+
+  const WeeklyCharacter = () => {
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, amount: 0.3 })
+
+    if (!weeklyCharacter) return null
+
+    return (
+      <motion.section
+        ref={ref}
+        className="weekly-highlight section"
+        initial="hidden"
+        animate={isInView ? 'visible' : 'hidden'}
+        variants={fadeInUp}
+      >
+        <div className="container">
+          <motion.div className="weekly-card glass">
+            <motion.div
+              className="weekly-media"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.4 }}
+            >
               <img src={weeklyCharacter.image} alt={weeklyCharacter.name} />
-            </div>
+              <div className="weekly-badge">Nhân vật trong tuần</div>
+            </motion.div>
             <div className="weekly-content">
               <p className="kicker">Nhân vật trong tuần</p>
-              <h2>{weeklyCharacter.name}</h2>
+              <h2 className="gradient-text">{weeklyCharacter.name}</h2>
               <p className="weekly-title">{weeklyCharacter.title}</p>
-              <p className="weekly-quote">“{highlightedQuote}”</p>
+              <p className="weekly-quote">"{highlightedQuote}"</p>
               <div className="weekly-meta">
-                <span>
-                  <strong>Thời kỳ hoạt động:</strong> {weeklyCharacter.personal_info.active_period}
-                </span>
-                <span>
-                  <strong>Quê quán:</strong> {weeklyCharacter.personal_info.hometown}
-                </span>
+                <div className="meta-item">
+                  <span className="meta-label">Thời kỳ hoạt động</span>
+                  <span className="meta-value">{weeklyCharacter.personal_info.active_period}</span>
+                </div>
+                <div className="meta-item">
+                  <span className="meta-label">Quê quán</span>
+                  <span className="meta-value">{weeklyCharacter.personal_info.hometown}</span>
+                </div>
               </div>
-              <Link className="btn secondary" to={`/nhan-vat/${weeklyCharacter.id}`}>
+              <Link className="btn primary" to={`/nhan-vat/${weeklyCharacter.id}`}>
                 Xem chi tiết
               </Link>
             </div>
-          </div>
-        </section>
-      )}
+          </motion.div>
+        </div>
+      </motion.section>
+    )
+  }
 
-      <section id="featured-events" className="featured-events">
+  const FeaturedEvents = () => {
+    const ref = useRef(null)
+    const isInView = useInView(ref, { once: true, amount: 0.2 })
+
+    return (
+      <motion.section
+        ref={ref}
+        id="featured-events"
+        className="featured-events section"
+        initial="hidden"
+        animate={isInView ? 'visible' : 'hidden'}
+        variants={staggerContainer}
+      >
         <div className="container">
-          <p className="kicker">Sự kiện tiêu biểu</p>
-          <h2>Những dấu mốc làm nên lịch sử</h2>
+          <motion.div className="section-head" variants={fadeInUp}>
+            <p className="kicker">Sự kiện tiêu biểu</p>
+            <h2 className="gradient-text">Những dấu mốc làm nên lịch sử</h2>
+          </motion.div>
+
           <div className="event-groups">
             {groupEventsByPhase().map(([phase, events]) => (
-              <div className="event-group" key={phase}>
-                <h3>{phase}</h3>
+              <motion.div key={phase} className="event-group" variants={fadeInUp}>
+                <h3 className="phase-title">{phase}</h3>
                 <div className="event-grid">
-                  {events.map((event) => (
-                    <article className="event-card" key={event.title}>
+                  {events.map((event, index) => (
+                    <motion.article
+                      key={event.title}
+                      className="event-card glass"
+                      variants={scaleIn}
+                      whileHover={{
+                        y: -12,
+                        transition: { duration: 0.3 }
+                      }}
+                      custom={index}
+                    >
                       <div className="event-thumb">
                         <img src={event.image} alt={event.title} />
+                        <div className="event-overlay"></div>
                       </div>
                       <div className="event-body">
                         <h4>{event.title}</h4>
                         <p>{event.description}</p>
                         <a className="event-link" href={event.link} target="_blank" rel="noreferrer">
-                          Tìm hiểu thêm →
+                          Tìm hiểu thêm
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path
+                              d="M3 8h10M9 4l4 4-4 4"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
                         </a>
                       </div>
-                    </article>
+                    </motion.article>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
+    )
+  }
+
+  return (
+    <div className="home-page">
+      <Banner />
+      <IntroSection />
+      <WeeklyCharacter />
+      <FeaturedEvents />
     </div>
   )
 }
