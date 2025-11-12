@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap');
 @import './styles/utilities.css';
+@import 'lenis/dist/lenis.css';
 
 :root {
   font-family: 'Be Vietnam Pro', 'Segoe UI', system-ui, -apple-system, sans-serif;
