@@ -1,70 +1,78 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { characters } from '../data/characters'
-import type { Domain } from '../types'
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { characters } from "../data/characters";
+import type { Domain } from "../types";
 
 type FilterState = {
-  query: string
-  period: string
-  domain: Domain | 'all'
-}
+  query: string;
+  period: string;
+  domain: Domain | "all";
+};
 
-const periods = [
-  '1910-1945',
-  '1945-1975',
-  '1975-1986',
-  '1986-nay'
-]
+const periods = ["1910-1945", "1945-1975", "1975-1986", "1986-nay"];
 
 const domainLabels: Record<Domain, string> = {
-  chinh_tri: 'Chính trị',
-  quan_su: 'Quân sự',
-  ngoai_giao: 'Ngoại giao',
-  tu_tuong: 'Tư tưởng',
-  kinh_te: 'Kinh tế'
-}
+  chinh_tri: "Chính trị",
+  quan_su: "Quân sự",
+  ngoai_giao: "Ngoại giao",
+  tu_tuong: "Tư tưởng",
+  kinh_te: "Kinh tế",
+};
 
 const inferPeriod = (activePeriod: string): string => {
-  const [startStr] = activePeriod.split('-')
-  const startYear = parseInt(startStr.trim(), 10)
-  if (startYear <= 1945) return '1910-1945'
-  if (startYear <= 1975) return '1945-1975'
-  if (startYear <= 1986) return '1975-1986'
-  return '1986-nay'
-}
+  const [startStr] = activePeriod.split("-");
+  const startYear = parseInt(startStr.trim(), 10);
+  if (startYear <= 1945) return "1910-1945";
+  if (startYear <= 1975) return "1945-1975";
+  if (startYear <= 1986) return "1975-1986";
+  return "1986-nay";
+};
 
-const pageSize = 6
+const pageSize = 6;
 
 const CharacterListPage = () => {
-  const [filters, setFilters] = useState<FilterState>({ query: '', period: 'all', domain: 'all' })
-  const [page, setPage] = useState(1)
+  const [filters, setFilters] = useState<FilterState>({
+    query: "",
+    period: "all",
+    domain: "all",
+  });
+  const [page, setPage] = useState(1);
 
   const filteredCharacters = useMemo(() => {
-    const normalizedQuery = filters.query.toLowerCase().trim()
+    const normalizedQuery = filters.query.toLowerCase().trim();
 
     return characters.filter((character) => {
       const matchesQuery =
         normalizedQuery.length === 0 ||
         character.name.toLowerCase().includes(normalizedQuery) ||
-        character.title.toLowerCase().includes(normalizedQuery)
+        character.title.toLowerCase().includes(normalizedQuery);
 
-      const periodForCharacter = inferPeriod(character.personal_info.active_period)
-      const matchesPeriod = filters.period === 'all' || periodForCharacter === filters.period
+      const periodForCharacter = inferPeriod(
+        character.personal_info.active_period
+      );
+      const matchesPeriod =
+        filters.period === "all" || periodForCharacter === filters.period;
 
       const matchesDomain =
-        filters.domain === 'all' || character.domains?.includes(filters.domain)
+        filters.domain === "all" || character.domains?.includes(filters.domain);
 
-      return matchesQuery && matchesPeriod && matchesDomain
-    })
-  }, [filters])
+      return matchesQuery && matchesPeriod && matchesDomain;
+    });
+  }, [filters]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredCharacters.length / pageSize))
-  const pagedCharacters = filteredCharacters.slice((page - 1) * pageSize, page * pageSize)
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredCharacters.length / pageSize)
+  );
+  const pagedCharacters = filteredCharacters.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
 
   const updateFilter = (nextFilter: Partial<FilterState>) => {
-    setPage(1)
-    setFilters((prev) => ({ ...prev, ...nextFilter }))
-  }
+    setPage(1);
+    setFilters((prev) => ({ ...prev, ...nextFilter }));
+  };
 
   return (
     <div className="character-list-page">
@@ -72,7 +80,10 @@ const CharacterListPage = () => {
         <header className="section-head">
           <p className="kicker">Khám phá lãnh tụ</p>
           <h1>Danh sách nhân vật</h1>
-          <p>Tìm kiếm, lọc theo thời kỳ hoặc lĩnh vực đóng góp để tìm hiểu sâu hơn.</p>
+          <p>
+            Tìm kiếm, lọc theo thời kỳ hoặc lĩnh vực đóng góp để tìm hiểu sâu
+            hơn.
+          </p>
         </header>
 
         <div className="filters">
@@ -91,14 +102,32 @@ const CharacterListPage = () => {
             <div className="filter-group">
               <label htmlFor="period">Thời kỳ hoạt động</label>
               <select
+                style={{
+                  color: "#FFF",
+                }}
                 id="period"
                 value={filters.period}
-                onChange={(event) => updateFilter({ period: event.target.value })}
+                onChange={(event) =>
+                  updateFilter({ period: event.target.value })
+                }
               >
-                <option value="all">Tất cả</option>
+                <option
+                  style={{
+                    color: "#FFF",
+                  }}
+                  value="all"
+                >
+                  Tất cả
+                </option>
                 {periods.map((period) => (
-                  <option key={period} value={period}>
-                    {period.replace('-', ' – ')}
+                  <option
+                    style={{
+                      color: "#FFF",
+                    }}
+                    key={period}
+                    value={period}
+                  >
+                    {period.replace("-", " – ")}
                   </option>
                 ))}
               </select>
@@ -107,13 +136,26 @@ const CharacterListPage = () => {
             <div className="filter-group">
               <label htmlFor="domain">Lĩnh vực đóng góp</label>
               <select
+                style={{
+                  color: "#FFF",
+                }}
                 id="domain"
                 value={filters.domain}
-                onChange={(event) => updateFilter({ domain: event.target.value as FilterState['domain'] })}
+                onChange={(event) =>
+                  updateFilter({
+                    domain: event.target.value as FilterState["domain"],
+                  })
+                }
               >
                 <option value="all">Tất cả</option>
                 {Object.entries(domainLabels).map(([domain, label]) => (
-                  <option key={domain} value={domain}>
+                  <option
+                    style={{
+                      color: "#FFF",
+                    }}
+                    key={domain}
+                    value={domain}
+                  >
                     {label}
                   </option>
                 ))}
@@ -147,7 +189,9 @@ const CharacterListPage = () => {
 
         {filteredCharacters.length === 0 && (
           <div className="empty-state">
-            <p>Không tìm thấy nhân vật phù hợp. Hãy điều chỉnh bộ lọc và thử lại.</p>
+            <p>
+              Không tìm thấy nhân vật phù hợp. Hãy điều chỉnh bộ lọc và thử lại.
+            </p>
           </div>
         )}
 
@@ -176,7 +220,7 @@ const CharacterListPage = () => {
         )}
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default CharacterListPage
+export default CharacterListPage;
